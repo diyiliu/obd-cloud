@@ -59,7 +59,7 @@ public class VoltageReducer extends TableReducer<IntWritable, Text, NullWritable
             System.out.println("电压[acc=" + acc + "]统计结果" + vehicleId + ":" + json);
 
             // 主键
-            byte[] rowKey = Bytes.toBytes(vehicleId + ":" + day + ":voltage:" + (acc == 1 ? "on" : "off"));
+            byte[] rowKey = Bytes.add(Bytes.toBytes(vehicleId), Bytes.toBytes(Integer.valueOf(day)), Bytes.toBytes("voltage:" + (acc == 1 ? "on" : "off")));
             Put put = new Put(rowKey);
             put.add(Bytes.toBytes("j"), Bytes.toBytes("v"), Bytes.toBytes(json));
 
