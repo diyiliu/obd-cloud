@@ -53,8 +53,9 @@ public class VoltageJob {
             day = cli.getOptionValue("day");
         }
         Date end = DateUtil.stringToDate(day, "yyyyMMdd");
-        String acc = cli.getOptionValue("acc");
+        Date begin = DateUtils.addDays(end, -1);
 
+        String acc = cli.getOptionValue("acc");
         // 参数异常
         if (end == null || !(acc.equals("0") || acc.equals("1"))) {
             System.out.println("args error!");
@@ -69,14 +70,14 @@ public class VoltageJob {
             conf.set("hbase.zookeeper.quorum", config.getProperty("hbase.zk-quorum"));
             conf.set("hbase.zookeeper.property.clientPort", config.getProperty("hbase.zk-port"));
             conf.set("acc", acc);
-            conf.set("day", day);
+            conf.set("day", String.format("%1$tY%1$tm%1$td", begin));
 
             // 电压数据源
             String dataTable = config.getProperty("hbase.obd-table");
 
             // HBase scan
             Scan scan = new Scan();
-            Filter rowFilter = new IntTimestampSuffixFilter(DateUtils.addDays(end, -1).getTime(), end.getTime());
+            Filter rowFilter = new IntTimestampSuffixFilter(begin.getTime(), end.getTime());
             FilterList qualifierFilters = new FilterList(FilterList.Operator.MUST_PASS_ALL);
             qualifierFilters.addFilter(rowFilter);
 
