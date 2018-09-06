@@ -39,7 +39,7 @@ tasks.withType(JavaCompile) {
 }
 
 jar {
-    archiveName = 'mr-voltage.jar'
+    archiveName = 'mr-scatter.jar'
 
     from {
         configurations.compile.collect {
