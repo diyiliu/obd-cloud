@@ -45,11 +45,11 @@ public class LoadReducer extends TableReducer<IntWritable, Text, NullWritable> {
         for (Text t : values) {
             String value = t.toString();
             int load = Integer.parseInt(value);
-            if (load <= 0){
+            if (load <= 0) {
                 continue;
             }
 
-            int l = load / 5 + 1;
+            int l = (load / 5 + 1) * 5;
             if (map.containsKey(l)) {
                 map.get(l).incrementAndGet();
             } else {
